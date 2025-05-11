@@ -14,7 +14,7 @@ Por producto
 ¿Cuál fue el precio promedio por producto? = producto["Precio_Unitario"]
 
 Por sucursal
-¿Qué sucursal vendió más (en cantidad y en euros)?
+¿Qué sucursal vendió más (en cantidad y en euros)? = sucursal_mayor_ventas["Cantidad"]
 
 ¿Cuál fue el ingreso promedio diario por sucursal?
 
@@ -30,6 +30,7 @@ Por fecha
 '''
 
 import pandas as pd
+import matplotlib.pyplot as plt
 
 df = pd.read_csv("C:/Users/User/Documents/python/ejercicios_chatgpt/mini-proyecto-sem-3/data/dataset_ventas.csv")
 # Fecha   Producto  Precio_Unitario  Cantidad   Sucursal  Total_Venta
@@ -54,5 +55,31 @@ productos = df.groupby("Producto").agg({
 })
 mayor_ingreso = productos["Total_Venta"].idxmax()
 producto_mayor_ingreso = productos.loc[mayor_ingreso]
-print(productos)
-print(productos.loc[mayor_ingreso])
+
+# analisis por sucrusal
+
+#¿Qué sucursal vendió más (en cantidad y en euros)?
+
+#¿Cuál fue el ingreso promedio diario por sucursal?
+
+#¿Cómo varían las ventas entre las sucursales? (puedes graficar esto si quieres)
+
+sucursales = df.groupby("Sucursal").agg({
+    "Cantidad":"sum",
+    "Total_Venta":"sum"
+})
+id_sucursal_mayor_ventas = sucursales["Total_Venta"].idxmax()
+sucursal_mayor_ventas = sucursales.loc[id_sucursal_mayor_ventas]
+
+ingresos_sucursales = df.groupby(["Fecha","Sucursal"])["Total_Venta"].mean()
+
+df_ordenado_fecha = df.sort_values(by="Fecha")
+
+print(ingresos_sucursales)
+
+df_ordenado_fecha.plot(x="Fecha",y="Total_Venta")
+plt.title("Ventas por Sucrusal")
+#plt.xlabel("Fecha")
+#plt.ylabel("Ventas")
+plt.show()
+
