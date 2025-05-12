@@ -16,16 +16,16 @@ Por producto
 Por sucursal
 ¿Qué sucursal vendió más (en cantidad y en euros)? = sucursal_mayor_ventas["Cantidad"]
 
-¿Cuál fue el ingreso promedio diario por sucursal?
+¿Cuál fue el ingreso promedio diario por sucursal? = ingresos_sucursales
 
 ¿Cómo varían las ventas entre las sucursales? (puedes graficar esto si quieres)
 
 Por fecha
-¿Cuál fue el promedio diario de ventas?
+¿Cuál fue el promedio diario de ventas? = promedio_diario_ventas
 
 ¿Qué tendencia se observa si agrupas las ventas por semana?
 
-¿Qué producto se vendió más en la primera semana de enero?
+¿Qué producto se vendió más en la primera semana de enero? = producto_mas_vendido_semana1
 
 '''
 
@@ -34,6 +34,8 @@ import matplotlib.pyplot as plt
 
 df = pd.read_csv("C:/Users/User/Documents/python/ejercicios_chatgpt/mini-proyecto-sem-3/data/dataset_ventas.csv")
 # Fecha   Producto  Precio_Unitario  Cantidad   Sucursal  Total_Venta
+
+df["Fecha"] = pd.to_datetime(df["Fecha"])
 
 total_ventas = df["Total_Venta"].sum()
 
@@ -75,11 +77,24 @@ ingresos_sucursales = df.groupby(["Fecha","Sucursal"])["Total_Venta"].mean()
 
 df_ordenado_fecha = df.sort_values(by="Fecha")
 
-print(ingresos_sucursales)
-
 df_ordenado_fecha.plot(x="Fecha",y="Total_Venta")
 plt.title("Ventas por Sucrusal")
-#plt.xlabel("Fecha")
-#plt.ylabel("Ventas")
-plt.show()
+plt.xlabel("Fecha")
+plt.ylabel("Ventas")
+#plt.show()
+
+#¿Cuál fue el promedio diario de ventas?
+
+#¿Qué tendencia se observa si agrupas las ventas por semana?
+
+#¿Qué producto se vendió más en la primera semana de enero?
+
+promedio_diario_ventas = df.groupby("Fecha")["Total_Venta"].mean()
+
+df_ventas_semanal = df.resample("W", on="Fecha")["Total_Venta"].sum()
+
+df_semana1 = df.loc[0:6]
+productos_vendido_semana1 = df_semana1.groupby("Producto")["Cantidad"].max()
+producto_mas_vendido_semana1 = productos_vendido_semana1.idxmax()
+
 
