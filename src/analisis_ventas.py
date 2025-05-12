@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("C:/Users/User/Documents/python/ejercicios_chatgpt/mini-proyecto-sem-3/data/dataset_ventas.csv")
+df = pd.read_csv("data/dataset_ventas.csv")
 
 # convertimos la columna Fecha en el formato adecuado
 df["Fecha"] = pd.to_datetime(df["Fecha"])
