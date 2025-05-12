@@ -1,34 +1,3 @@
-'''
-Análisis general
-¿Cuál es el total de ventas generado en todo el periodo? = total_ventas
-
-¿Cuántas ventas totales se registraron por producto? = ventas_totales_productos["Total_Venta"]
- 
-¿Qué día se registró la mayor venta (en euros)? = mayor_venta
-
-Por producto
-¿Cuál fue el producto más vendido en cantidad total? = producto["Cantidad"]
-
-¿Cuál fue el producto que generó más ingresos? = producto_mayor_ingreso
-
-¿Cuál fue el precio promedio por producto? = producto["Precio_Unitario"]
-
-Por sucursal
-¿Qué sucursal vendió más (en cantidad y en euros)? = sucursal_mayor_ventas["Cantidad"]
-
-¿Cuál fue el ingreso promedio diario por sucursal? = ingresos_sucursales
-
-¿Cómo varían las ventas entre las sucursales? (puedes graficar esto si quieres)
-
-Por fecha
-¿Cuál fue el promedio diario de ventas? = promedio_diario_ventas
-
-¿Qué tendencia se observa si agrupas las ventas por semana?
-
-¿Qué producto se vendió más en la primera semana de enero? = producto_mas_vendido_semana1
-
-'''
-
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -77,11 +46,7 @@ ingresos_sucursales = df.groupby(["Fecha","Sucursal"])["Total_Venta"].mean()
 
 df_ordenado_fecha = df.sort_values(by="Fecha")
 
-df_ordenado_fecha.plot(x="Fecha",y="Total_Venta")
-plt.title("Ventas por Sucrusal")
-plt.xlabel("Fecha")
-plt.ylabel("Ventas")
-#plt.show()
+
 
 #¿Cuál fue el promedio diario de ventas?
 
@@ -97,4 +62,64 @@ df_semana1 = df.loc[0:6]
 productos_vendido_semana1 = df_semana1.groupby("Producto")["Cantidad"].max()
 producto_mas_vendido_semana1 = productos_vendido_semana1.idxmax()
 
+print("---------------------------------------")
+print("            Análisis general           ")
+print("---------------------------------------")
 
+print("¿Cuál es el total de ventas generado en todo el periodo?")
+print("El total de ventas generado en todo el periodo es de: ", total_ventas)
+
+print("\n¿Cuántas ventas totales se registraron por producto?")
+print(ventas_totales_productos["Total_Venta"])
+
+print("\n¿Qué día se registró la mayor venta (en euros)?")
+print(f'La mayor venta se realizo el dia {mayor_venta["Fecha"]} con un total de ${mayor_venta["Total_Venta"]}')
+
+print("---------------------------------------")
+print("        Análisis por Productos         ")
+print("---------------------------------------")
+
+print("¿Cuál fue el producto más vendido en cantidad total?")
+print(productos["Cantidad"])
+
+print("\n¿Cuál fue el producto que generó más ingresos?")
+print(producto_mayor_ingreso)
+
+print("\n¿Cuál fue el precio promedio por producto?")
+print(productos["Precio_Unitario"])
+
+print("---------------------------------------")
+print("        Análisis por Sucursal          ")
+print("---------------------------------------")
+
+print("¿Qué sucursal vendió más (en cantidad y en euros)?")
+print(f'Sucursal: {id_sucursal_mayor_ventas}\nCantidad: {sucursal_mayor_ventas["Cantidad"]}\nEuros: {sucursal_mayor_ventas["Total_Venta"]}')
+
+print("\n¿Cuál fue el ingreso promedio diario por sucursal?")
+print(ingresos_sucursales)
+
+print("\n¿Cómo varían las ventas entre las sucursales?")
+df_ordenado_fecha.plot(x="Fecha",y="Total_Venta")
+plt.figure(figsize=(8, 4))
+plt.title("Ventas por Sucursal")
+plt.xlabel("Fecha")
+plt.ylabel("Ventas")
+plt.show()
+
+print("---------------------------------------")
+print("         Análisis por Fecha            ")
+print("---------------------------------------")
+
+print("\n¿Cuál fue el promedio diario de ventas?")
+print(promedio_diario_ventas)
+
+print("\n¿Qué tendencia se observa si agrupas las ventas por semana?")
+df_ventas_semanal.plot(x="Fecha",y="Total_Venta")
+plt.figure(figsize=(8, 4))
+plt.title("Tendencia de ventas Semanal")
+plt.xlabel("Fecha")
+plt.ylabel("Ventas")
+plt.show()
+
+print("\n¿Qué producto se vendió más en la primera semana de enero?")
+print(producto_mas_vendido_semana1)
